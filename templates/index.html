@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type='text/babel' data-type="module">
+        const Home = () => {
+            const value1 = React.useRef(null);
+            const value2 = React.useRef(null);
+            const mathoption = React.useRef(null);
+            const [mathresult, setMathResult] = React.useState(null);
+            const [error, setError] = React.useState(null);
+
+            const handleOption = (e) => {
+                setMathOption(e.target.value);
+            }
+        
+
+        const handleRequest = async () => {
+            event.preventDefault();
+            try {
+                const { data } = await axios.post("http://127.0.0.1:8080/calc",
+                {
+                value1: parseInt(value1.current.value),
+                value2: parseInt(value2.current.value),
+                operation: mathoption.current.value
+                });
+                setMathResult(data.result);
+            } catch (error) {
+                console.log(error);
+                setError("Erro na request")
+            }
+        }
+
+            return (
+            <form onSubmit={handleRequest}>
+                <label htmlFor="number1">Primeiro valor:</label><br/>
+                <input type="text" id="number1" name="number1" ref={value1}/><br/>
+                <label htmlFor="number2">Segundo valor:</label><br/>
+                <input type="text" id="number2" name="number2" ref={value2}/><br/><br/>
+                <select name="selectoperation" ref={mathoption}>
+                    <option value="plus" defaultValue>Adição</option> 
+                    <option value="minus">Subtração</option>
+                    <option value="multiply">Multiplicação</option>
+                    <option value="division">Divisão</option>
+                </select><br/><br/>
+                <button type="submit">Enviar</button>
+                {mathresult && <h1>O resultado é {mathresult}</h1>}
+                {error && <h1>Ocorreu um erro na requisição. Verifique o console</h1>}
+            </form>
+            
+            );
+        }
+        ReactDOM.render(<Home />, document.getElementById("root"));
+      </script>
+
+</body>
+
+</html>
