@@ -14,6 +14,7 @@ def controller_responde_template():
 
     if(not val1 or not val2 or not op):
         res = make_response(jsonify({"error": "error"}), 500)
+        return res
 
     if(op == "plus"):
         res = make_response(jsonify({"result": val1 + val2}), 200)
