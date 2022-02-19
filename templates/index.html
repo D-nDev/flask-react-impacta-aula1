@@ -22,11 +22,6 @@
             const [mathresult, setMathResult] = React.useState(null);
             const [error, setError] = React.useState(null);
 
-            const handleOption = (e) => {
-                setMathOption(e.target.value);
-            }
-        
-
         const handleRequest = async () => {
             event.preventDefault();
             try {
